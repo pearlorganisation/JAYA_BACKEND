@@ -9,6 +9,7 @@ const authSchema = new mongoose.Schema(
     email: {
       type: String,
       required: true,
+
       match: [emailRegex, "Invalid email!! Please try again"],
     },
     password: {
@@ -16,11 +17,16 @@ const authSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    phoneNumber: {
+      type: String,
+      required: true,
+      trim: true,
+    },
     role: {
       type: String,
       required: true,
-      default: "Student",
-      enum: ["Super-Admin", "Admin"],
+      default: "User",
+      enum: ["Admin", "User"],
     },
   },
   { timestamps: true }

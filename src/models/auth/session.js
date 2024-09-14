@@ -13,4 +13,4 @@ const sessionSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("loginSession", sessionSchema, "loginSession");
+export default mongoose.model("loginSession", sessionSchema);

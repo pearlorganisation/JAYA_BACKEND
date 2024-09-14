@@ -26,7 +26,7 @@ app.use(
           credentials: true,
         }
       : {
-          origin: ["http://localhost:4112", "http://localhost:5174", "*"],
+          origin: ["http://localhost:4112", "http://localhost:5173", "*"],
           methods: ["GET", "PUT", "POST", "PATCH", "DELETE"],
           allowedHeaders: ["Content-Type", "Authorization", "x-csrf-token"],
           credentials: true,
@@ -48,12 +48,13 @@ if (process.env.NODE_ENV === "development") {
 import authRoutes from "./src/routes/auth.js";
 import schemesRoutes from "./src/routes/govermentSchemes.js";
 import documentsRoutes from "./src/routes/documents.js";
-
+import blogRoutes from "./src/routes/blogs.js";
 // ---------------
 
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/schemes", schemesRoutes);
 app.use("/api/v1/documents", documentsRoutes);
+app.use("/api/v1/blogs", blogRoutes);
 app.use(error);
 
 // @@---MONGODB--------------------------------------

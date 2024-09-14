@@ -23,4 +23,4 @@ const govermentSchemes = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("schemes", govermentSchemes, "schemes");
+export default mongoose.model("schemes", govermentSchemes);

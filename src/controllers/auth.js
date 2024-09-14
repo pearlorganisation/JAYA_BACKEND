@@ -12,8 +12,9 @@ import role from "../models/auth/role.js";
 // @desc  - Signup
 // @route - POST api/v1/auth/signup
 // @access- Public
+
 export const signup = asyncHandler(async (req, res, next) => {
-  const { password } = req?.body;
+  const { email, phoneNumber, username, password } = req.body;
 
   // if (!passwordRegex.test(password)) {
   //   return next(
@@ -26,6 +27,7 @@ export const signup = asyncHandler(async (req, res, next) => {
   const hashedPassword = await bcrypt.hash(password, 10);
   const newUser = new auth({ ...req?.body, password: hashedPassword });
   await newUser.save();
+
   res
     .status(201)
     .json({ status: true, message: "Created successfully!!", newUser });
@@ -38,11 +40,13 @@ export const signin = asyncHandler(async (req, res, next) => {
   const { password, username, email } = req?.body;
   const user = await auth.findOne({ $or: [{ username }, { email }] });
   if (!user) {
-    return next(new errorResponse("No user found with given email/username!!"));
+    return next(
+      new errorResponse("No user found with given email/username!!", 400)
+    );
   }
-  const validPassword = bcrypt.compare(password, user?.password);
+  const validPassword = await bcrypt.compare(password, user?.password);
   if (!validPassword) {
-    return next(new errorResponse("Invalid password, Please try again!!"));
+    return next(new errorResponse("Invalid password, Please try again!!", 400));
   }
   // await session.create({ sessionId: "dummyId", userId: user?._id });
   const token = jwt.sign(
@@ -57,6 +61,7 @@ export const signin = asyncHandler(async (req, res, next) => {
     sameSite: process.env.NODE_ENV === "production" ? "none" : "Lax",
     ...(process.env.NODE_ENV === "production" && { secure: true }),
   });
+
   res.status(200).json({
     status: true,
     message: "logged In successfully!!",
