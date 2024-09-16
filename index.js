@@ -35,7 +35,9 @@ app.use(
         }
   )
 );
+app.use(morgan('dev'));
 app.use(express.json());
+
 app.use("/api", limiter);
 
 if (process.env.NODE_ENV === "development") {
@@ -49,12 +51,14 @@ import authRoutes from "./src/routes/auth.js";
 import schemesRoutes from "./src/routes/govermentSchemes.js";
 import documentsRoutes from "./src/routes/documents.js";
 import blogRoutes from "./src/routes/blogs.js";
+import { userDataRoutes } from "./src/routes/userData.js";
 // ---------------
 
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/schemes", schemesRoutes);
 app.use("/api/v1/documents", documentsRoutes);
 app.use("/api/v1/blogs", blogRoutes);
+app.use("/api/v1/userData", userDataRoutes);
 app.use(error);
 
 // @@---MONGODB--------------------------------------
