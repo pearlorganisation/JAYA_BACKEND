@@ -55,7 +55,7 @@ export const signin = asyncHandler(async (req, res, next) => {
     { expiresIn: process.env.ACCESS_TOKEN_VALIDITY }
   );
 
-  res.cookie("PHEKU_TOKEN", token, {
+  res.cookie("JAYA_TOKEN", token, {
     httpOnly: true,
     expiresIn: process.env.ACCESS_TOKEN_VALIDITY,
     sameSite: process.env.NODE_ENV === "production" ? "none" : "Lax",
@@ -66,7 +66,7 @@ export const signin = asyncHandler(async (req, res, next) => {
     status: true,
     message: "logged In successfully!!",
     token,
-    username,
+    user,
   });
 });
 
