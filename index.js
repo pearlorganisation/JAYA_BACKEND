@@ -52,6 +52,7 @@ import schemesRoutes from "./src/routes/govermentSchemes.js";
 import documentsRoutes from "./src/routes/documents.js";
 import blogRoutes from "./src/routes/blogs.js";
 import { userDataRoutes } from "./src/routes/userData.js";
+import { schemeRouter } from "./src/routes/scheme.js";
 // ---------------
 
 app.use("/api/v1/auth", authRoutes);
@@ -59,6 +60,7 @@ app.use("/api/v1/schemes", schemesRoutes);
 app.use("/api/v1/documents", documentsRoutes);
 app.use("/api/v1/blogs", blogRoutes);
 app.use("/api/v1/userData", userDataRoutes);
+app.use("/api/v1/scheme", schemeRouter);
 app.use(error);
 
 // @@---MONGODB--------------------------------------
