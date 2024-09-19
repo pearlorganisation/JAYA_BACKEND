@@ -16,7 +16,7 @@ const schemesSchema = new mongoose.Schema(
     },
     schemeType:{
       type:String,
-      enum:['gov','private','funded']
+      enum:['gov','private','semi']
     }
     // blogImage: { type: String, required: true },
 
@@ -24,4 +24,4 @@ const schemesSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export const Scheme =  mongoose.model("Scheme", schemesSchema);
+export const Scheme =  mongoose.model('Scheme', schemesSchema);

@@ -18,6 +18,8 @@ export const uploadFileToCloudinary = async (file) => {
       });
       // Deleting the file after successful upload
       fs.unlink(file.path, (err) => {
+
+        
         if (err) {
           console.error("Error deleting file from disk:", err);
         } else {
