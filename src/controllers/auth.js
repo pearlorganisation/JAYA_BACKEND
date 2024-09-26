@@ -25,7 +25,7 @@ export const signup = asyncHandler(async (req, res, next) => {
   //     )
   //   );
   // }
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const hashedPassword = await bcrypt.hash(password, 12);
   const newUser = new auth({ ...req?.body, password: hashedPassword });
   await newUser.save();
 
@@ -100,84 +100,74 @@ export const deleteRole = asyncHandler(async (req, res, next) => {
   res.status(200).json({ status: true, message: "Deleted successfully!!" });
 });
 
-export const updateProfile = asyncHandler(async (req,res,next)=>{
-  const {email} = req.params;
-  const {password,userName,phoneNumber} = req.body;
-  let profile = req?.file || null ;
-  if(profile)
-  {
+export const updateProfile = asyncHandler(async (req, res, next) => {
+  const { email } = req.params;
+  const { password, userName, phoneNumber } = req.body;
+  let profile = req?.file || null;
+  if (profile) {
     profile = await uploadFileToCloudinary(profile);
   }
 
-
-  if(!email||!password)
-  {
-    return res
-    .status(400)
-    .json({ status: false, message: "Provide Valid Email Id and Password!!" });
+  if (!email || !password) {
+    return res.status(400).json({
+      status: false,
+      message: "Provide Valid Email Id and Password!!",
+    });
   }
 
-  const userData = await auth.findOne({email});
+  const userData = await auth.findOne({ email });
 
-  if(!userData)
-  {
+  if (!userData) {
     return res
-    .status(404)
-    .json({ status: false, message: "Email Id Not Found !!" });
+      .status(404)
+      .json({ status: false, message: "Email Id Not Found !!" });
   }
 
   const validPassword = await bcrypt.compare(password, userData?.password);
 
-  if(!validPassword)
-  {
+  if (!validPassword) {
     return res
-    .status(404)
-    .json({ status: false, message: "Password  Is Not Valid  !!" });
+      .status(404)
+      .json({ status: false, message: "Password  Is Not Valid  !!" });
   }
 
   const query = {};
 
-  if(userName)
-  {
-    query.userName = userName; 
+  if (userName) {
+    query.userName = userName;
   }
-  if(profile)
-  {
+  if (profile) {
     query.profile = profile.url;
   }
-  if(phoneNumber)
-  {
+  if (phoneNumber) {
     query.phoneNumber = phoneNumber;
-
   }
 
-  const updatedProfile = await auth.findByIdAndUpdate(userData._id,query);
+  const updatedProfile = await auth.findByIdAndUpdate(userData._id, query);
 
-
-
-    res
+  res
     .status(200)
     .json({ status: false, message: "Profile  Updated Successfully  !!" });
-  
-
-
 });
 
-export const getProfile = asyncHandler(async (req,res,next)=>{
-  const {email} = req.params;
+export const getProfile = asyncHandler(async (req, res, next) => {
+  const { email } = req.params;
 
-  if(!email)
-  {
+  const isEmailExists = await auth.findOne({ email });
+  if (!isEmailExists) {
     return res
-    .status(400)
-    .json({ status: false, message: "Bad Request Provide Email  !!" });
+      .status(400)
+      .json({ status: false, message: "Bad Request Provide Email  !!" });
   }
 
-  const userProfileData = await auth.findOne({email}).select('-password -createdAt -updatedAt -role').lean();
+  const userProfileData = await auth
+    .findOne({ email })
+    .select("-password -createdAt -updatedAt -role")
+    .lean();
 
-  return res
-    .status(200)
-    .json({ status: true, message: "Profile Fetched Successfully  !!" ,data:userProfileData});
-
-
-})
+  return res.status(200).json({
+    status: true,
+    message: "Profile Fetched Successfully  !!",
+    data: userProfileData,
+  });
+});

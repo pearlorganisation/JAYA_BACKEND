@@ -11,11 +11,11 @@ const app = express();
 const PORT = process.env.PORT || 7000;
 
 // @@---MIDDLEWARES--------------------------------
-const limiter = rateLimit({
-  max: 100, // Maximum requested for api calls/IP
-  windowMs: 60 * 60 * 1000, // Within 1 hour
-  message: "Too many requests, please try again later",
-});
+// const limiter = rateLimit({
+//   max: 100, // Maximum requested for api calls/IP
+//   windowMs: 60 * 60 * 1000, // Within 1 hour
+//   message: "Too many requests, please try again later",
+// });
 
 dotenv.config();
 app.use(
@@ -26,7 +26,12 @@ app.use(
           credentials: true,
         }
       : {
-          origin: ["http://localhost:4112", "http://localhost:5173", "*"],
+          origin: [
+            "http://localhost:4112",
+            "http://localhost:5173",
+            "http://localhost:5174",
+            "*",
+          ],
           methods: ["GET", "PUT", "POST", "PATCH", "DELETE"],
           allowedHeaders: ["Content-Type", "Authorization", "x-csrf-token"],
           credentials: true,
@@ -35,10 +40,10 @@ app.use(
         }
   )
 );
-app.use(morgan('dev'));
+app.use(morgan("dev"));
 app.use(express.json());
 
-app.use("/api", limiter);
+// app.use("/api", limiter);
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
@@ -62,7 +67,7 @@ app.use("/api/v1/documents", documentsRoutes);
 app.use("/api/v1/blogs", blogRoutes);
 app.use("/api/v1/userData", userDataRoutes);
 app.use("/api/v1/scheme", schemeRouter);
-app.use("/api/v1/bookmarks",bookmarkRouter);
+app.use("/api/v1/bookmarks", bookmarkRouter);
 app.use(error);
 
 // @@---MONGODB--------------------------------------
