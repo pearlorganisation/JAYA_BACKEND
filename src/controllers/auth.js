@@ -67,7 +67,7 @@ export const signin = asyncHandler(async (req, res, next) => {
     status: true,
     message: "logged In successfully!!",
     token,
-    username,
+    user,
   });
 });
 
