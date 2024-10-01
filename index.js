@@ -11,11 +11,11 @@ const app = express();
 const PORT = process.env.PORT || 7000;
 
 // @@---MIDDLEWARES--------------------------------
-// const limiter = rateLimit({
-//   max: 100, // Maximum requested for api calls/IP
-//   windowMs: 60 * 60 * 1000, // Within 1 hour
-//   message: "Too many requests, please try again later",
-// });
+const limiter = rateLimit({
+  max: 100000, // Maximum requested for api calls/IP
+  windowMs: 60 * 60 * 1000, // Within 1 hour
+  message: "Too many requests, please try again later",
+});
 
 dotenv.config();
 app.use(

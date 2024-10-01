@@ -145,9 +145,11 @@ export const updateProfile = asyncHandler(async (req, res, next) => {
 
   const updatedProfile = await auth.findByIdAndUpdate(userData._id, query);
 
-  res
-    .status(200)
-    .json({ status: false, message: "Profile  Updated Successfully  !!" });
+  res.status(200).json({
+    status: false,
+    message: "Profile  Updated Successfully  !!",
+    updatedProfile,
+  });
 });
 
 export const getProfile = asyncHandler(async (req, res, next) => {
