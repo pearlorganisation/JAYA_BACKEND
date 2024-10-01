@@ -14,5 +14,8 @@ router.route("/signup").post(signup);
 router.route("/signin").post(signin);
 router.route("/role").post(newRole).get(getRole);
 router.route("/role/:id").delete(deleteRole);
-router.route('/profile/:email').get(getProfile).patch(upload.single('profile'),updateProfile);
+router
+  .route("/profile/:email")
+  .get(getProfile)
+  .patch(upload.single("profile"), updateProfile);
 export default router;

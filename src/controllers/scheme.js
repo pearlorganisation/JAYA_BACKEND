@@ -2,27 +2,28 @@ import mongoose from "mongoose";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { Scheme } from "../models/auth/schemes.js";
 
-
-
-
 // Create a new scheme
 export const createScheme = asyncHandler(async (req, res) => {
   const { title, miniTitle, postedBy, tags, schemeBody, schemeType ,eligibilityCriteria} = req.body;
 
-  console.log("sfsafsa",req.body);
+  console.log("sfsafsa", req.body);
 
   const scheme = new Scheme({
     title,
     miniTitle,
     postedBy,
-    tags:tags||[],
+    tags: tags || [],
     schemeBody,
     schemeType,
     eligibilityCriteria
   });
 
   const createdScheme = await scheme.save();
-  res.status(201).json({status:true,message:"Scheme Created Successfully !!",data:createdScheme});
+  res.status(201).json({
+    status: true,
+    message: "Scheme Created Successfully !!",
+    data: createdScheme,
+  });
 });
 
 // Get all schemes
@@ -57,13 +58,18 @@ export const getSchemes = asyncHandler(async (req, res) => {
 // Get a single scheme by ID
 export const getSchemeById = asyncHandler(async (req, res) => {
   const { id } = req.params;
+  console.log(id, "ID");
   const scheme = await Scheme.findById(id);
 
   if (!scheme) {
-    res.status(404).json({status:false,message:"Scheme not Found !!"});
+    res.status(404).json({ status: false, message: "Scheme not Found !!" });
   }
 
-  res.status(200).json({status:true,message:"Scheme Fetched Successfully !!",data:scheme});
+  res.status(200).json({
+    status: true,
+    message: "Scheme Fetched Successfully !!",
+    data: scheme,
+  });
 });
 
 // Update a scheme by ID -- pending not reviewed
@@ -75,7 +81,7 @@ export const updateScheme = asyncHandler(async (req, res) => {
 
   if (!scheme) {
     res.status(404);
-    throw new Error('Scheme not found');
+    throw new Error("Scheme not found");
   }
 
   scheme.title = title || scheme.title;
@@ -95,9 +101,8 @@ export const deleteScheme = asyncHandler(async (req, res) => {
   const scheme = await Scheme.findByIdAndDelete(id);
 
   if (!scheme) {
-    res.status(404).json({status:false,message:"Scheme not Found !!"});
+    res.status(404).json({ status: false, message: "Scheme not Found !!" });
   }
 
-  
-  res.status(200).json({status:true,message:"Scheme Deleted !!"});
+  res.status(200).json({ status: true, message: "Scheme Deleted !!" });
 });
