@@ -7,7 +7,7 @@ import { Scheme } from "../models/auth/schemes.js";
 
 // Create a new scheme
 export const createScheme = asyncHandler(async (req, res) => {
-  const { title, miniTitle, postedBy, tags, schemeBody, schemeType } = req.body;
+  const { title, miniTitle, postedBy, tags, schemeBody, schemeType ,eligibilityCriteria} = req.body;
 
   console.log("sfsafsa",req.body);
 
@@ -17,7 +17,8 @@ export const createScheme = asyncHandler(async (req, res) => {
     postedBy,
     tags:tags||[],
     schemeBody,
-    schemeType
+    schemeType,
+    eligibilityCriteria
   });
 
   const createdScheme = await scheme.save();
@@ -35,7 +36,7 @@ export const getSchemes = asyncHandler(async (req, res) => {
     if (tags && tags.length > 0) {
       query = { tags: { $in: tags } };
     }
-    console.log("dasd",query);
+    
     const [schemes, total] = await Promise.all([
       Scheme.find(query).skip(skip).limit(Number(limit)),
       Scheme.countDocuments(query)
