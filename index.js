@@ -22,7 +22,7 @@ app.use(
   cors(
     process.env.NODE_ENV === "production"
       ? {
-          origin: ["http://localhost:4112", "http://localhost:5010", "*"],
+          origin: ["http://localhost:4112", "http://localhost:5010", "*","https://jaya-mern.vercel.app/"],
           credentials: true,
         }
       : {
@@ -30,6 +30,7 @@ app.use(
             "http://localhost:4112",
             "http://localhost:5173",
             "http://localhost:5174",
+            "https://jaya-mern.vercel.app/",
             "*",
           ],
           methods: ["GET", "PUT", "POST", "PATCH", "DELETE"],
