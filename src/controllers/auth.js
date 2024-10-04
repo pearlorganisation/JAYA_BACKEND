@@ -102,7 +102,7 @@ export const deleteRole = asyncHandler(async (req, res, next) => {
 
 export const updateProfile = asyncHandler(async (req, res, next) => {
   const { email } = req.params;
-  const { password, userName, phoneNumber } = req.body;
+  const { password, username, phoneNumber } = req.body;
   let profile = req?.file || null;
   if (profile) {
     profile = await uploadFileToCloudinary(profile);
@@ -133,8 +133,8 @@ export const updateProfile = asyncHandler(async (req, res, next) => {
 
   const query = {};
 
-  if (userName) {
-    query.userName = userName;
+  if (username) {
+    query.username = username;
   }
   if (profile) {
     query.profile = profile.url;
@@ -142,11 +142,13 @@ export const updateProfile = asyncHandler(async (req, res, next) => {
   if (phoneNumber) {
     query.phoneNumber = phoneNumber;
   }
-
-  const updatedProfile = await auth.findByIdAndUpdate(userData._id, query);
+  console.log(query);
+  const updatedProfile = await auth.findByIdAndUpdate(userData._id, query, {
+    new: true,
+  });
 
   res.status(200).json({
-    status: false,
+    status: true,
     message: "Profile  Updated Successfully  !!",
     updatedProfile,
   });
