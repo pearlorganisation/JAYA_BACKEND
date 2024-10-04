@@ -30,7 +30,7 @@ app.use(
             "http://localhost:4112",
             "http://localhost:5173",
             "http://localhost:5174",
-            "https://jaya-mern.vercel.app/",
+            "https://jaya-mern.vercel.app",
             "*",
           ],
           methods: ["GET", "PUT", "POST", "PATCH", "DELETE"],
