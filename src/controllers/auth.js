@@ -102,13 +102,13 @@ export const deleteRole = asyncHandler(async (req, res, next) => {
 
 export const updateProfile = asyncHandler(async (req, res, next) => {
   const { email } = req.params;
-  const { password, username, phoneNumber } = req.body;
+  const { username, phoneNumber } = req.body;
   let profile = req?.file || null;
   if (profile) {
     profile = await uploadFileToCloudinary(profile);
   }
 
-  if (!email || !password) {
+  if (!email) {
     return res.status(400).json({
       status: false,
       message: "Provide Valid Email Id and Password!!",
@@ -121,14 +121,6 @@ export const updateProfile = asyncHandler(async (req, res, next) => {
     return res
       .status(404)
       .json({ status: false, message: "Email Id Not Found !!" });
-  }
-
-  const validPassword = await bcrypt.compare(password, userData?.password);
-
-  if (!validPassword) {
-    return res
-      .status(404)
-      .json({ status: false, message: "Password  Is Not Valid  !!" });
   }
 
   const query = {};

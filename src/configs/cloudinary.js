@@ -15,12 +15,10 @@ export const uploadFileToCloudinary = async (file) => {
     try {
       const res = await cloudinary.uploader.upload(file.path, {
         folder: "uploads",
-        resource_type: "auto",
+        resource_type: "raw",
       });
       // Deleting the file after successful upload
       fs.unlink(file.path, (err) => {
-
-        
         if (err) {
           console.error("Error deleting file from disk:", err);
         } else {
