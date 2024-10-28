@@ -18,6 +18,6 @@ router
 router.route("/:id").get(getAllDocumentsById);
 router.route("/addDocument/:id").patch(upload.single("document"), addDocuments);
 
-router.route("/removeDocument/:id").delete(removeDocuments);
+router.route("/removeDocuments/:id").patch(removeDocuments);
 
 export default router;

@@ -1,5 +1,5 @@
 import documents from "../models/auth/documents.js";
-import mongoose from "mongoose";
+import mongoose, { mongo } from "mongoose";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import errorResponse from "../utils/errorResponse.js";
 import { uploadFileToCloudinary } from "../configs/cloudinary.js";
@@ -77,8 +77,10 @@ export const removeDocuments = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
   const { documentId } = req.body;
 
+  const docId = new mongoose.Types.ObjectId(id);
+
   const data = await documents.findOneAndUpdate(
-    { _id: id },
+    { _id: docId },
     {
       $pull: {
         documentsCollection: { _id: documentId },
@@ -89,8 +91,17 @@ export const removeDocuments = asyncHandler(async (req, res, next) => {
     }
   );
 
+  if (data && data.documentsCollection.length === 0) {
+    await documents.findOneAndDelete({ _id: id });
+    return res.status(200).json({
+      status: true,
+      message: "Whole Collection Removed Successfully !!",
+    });
+  }
   if (!data) {
-    res.status(404).json({ status: true, message: "Document Not Found !!" });
+    return res
+      .status(404)
+      .json({ status: true, message: "Document Not Found !!" });
   }
 
   res
