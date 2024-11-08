@@ -9,6 +9,7 @@ import session from "../models/auth/session.js";
 import { token } from "morgan";
 import role from "../models/auth/role.js";
 import { uploadFileToCloudinary } from "../configs/cloudinary.js";
+import { isValidPhoneNumber } from "libphonenumber-js";
 
 // @desc  - Signup
 // @route - POST api/v1/auth/signup
@@ -17,14 +18,22 @@ import { uploadFileToCloudinary } from "../configs/cloudinary.js";
 export const signup = asyncHandler(async (req, res, next) => {
   const { email, phoneNumber, username, password } = req.body;
 
-  // if (!passwordRegex.test(password)) {
-  //   return next(
-  //     new errorResponse(
-  //       "Password must contain a minimum of 7 and a maximum of 15 characters, and must include at least one special character, number, uppercase and lowercase alphabet",
-  //       400
-  //     )
-  //   );
-  // }
+  const existingUser = await auth.findOne({ email });
+  if (existingUser) {
+    return res.status(400).json({
+      status: false,
+      message: "Email already in use. Please use a different email.",
+    });
+  }
+
+  if (!isValidPhoneNumber(phoneNumber, "IN")) {
+    return res.status(400).json({
+      status: false,
+      message:
+        "Invalid phone number format. Please ensure the number is valid for India.",
+    });
+  }
+
   const hashedPassword = await bcrypt.hash(password, 12);
   const newUser = new auth({ ...req?.body, password: hashedPassword });
   await newUser.save();
