@@ -1,12 +1,10 @@
 import errorResponse from "../utils/errorResponse.js";
-import CryptoJS from "crypto-js";
-import { passwordRegex } from "../utils/other.js";
+
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import auth from "../models/auth/auth.js";
-import session from "../models/auth/session.js";
-import { token } from "morgan";
+
 import role from "../models/auth/role.js";
 import { uploadFileToCloudinary } from "../configs/cloudinary.js";
 import { isValidPhoneNumber } from "libphonenumber-js";

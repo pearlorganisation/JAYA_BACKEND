@@ -22,7 +22,12 @@ app.use(
   cors(
     process.env.NODE_ENV === "production"
       ? {
-          origin: ["http://localhost:4112", "http://localhost:5010", "*","https://jaya-mern.vercel.app"],
+          origin: [
+            "http://localhost:4112",
+            "http://localhost:5010",
+            "*",
+            "https://jaya-mern.vercel.app",
+          ],
           credentials: true,
         }
       : {
@@ -54,6 +59,7 @@ if (process.env.NODE_ENV === "development") {
 
 // @@---Route-Section--------------------------------
 import authRoutes from "./src/routes/auth.js";
+import userRoutes from "./src/routes/user.js";
 import schemesRoutes from "./src/routes/govermentSchemes.js";
 import documentsRoutes from "./src/routes/documents.js";
 import blogRoutes from "./src/routes/blogs.js";
@@ -63,6 +69,7 @@ import { bookmarkRouter } from "./src/routes/bookmark.js";
 // ---------------
 
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/schemes", schemesRoutes);
 app.use("/api/v1/documents", documentsRoutes);
 app.use("/api/v1/blogs", blogRoutes);
