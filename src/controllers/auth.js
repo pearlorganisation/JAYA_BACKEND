@@ -111,6 +111,14 @@ export const updateProfile = asyncHandler(async (req, res, next) => {
   const { email } = req.params;
   const { username, phoneNumber } = req.body;
   let profile = req?.file || null;
+
+  if (!username || !phoneNumber) {
+    return res.status(400).json({
+      status: false,
+      message: "Username and phone number are required.",
+    });
+  }
+
   if (profile) {
     profile = await uploadFileToCloudinary(profile);
   }
@@ -118,7 +126,7 @@ export const updateProfile = asyncHandler(async (req, res, next) => {
   if (!email) {
     return res.status(400).json({
       status: false,
-      message: "Provide Valid Email Id and Password!!",
+      message: "Provide Valid Email Id ",
     });
   }
 
@@ -142,9 +150,13 @@ export const updateProfile = asyncHandler(async (req, res, next) => {
     query.phoneNumber = phoneNumber;
   }
   console.log(query);
+
+  // if(query.username)
   const updatedProfile = await auth.findByIdAndUpdate(userData._id, query, {
     new: true,
   });
+
+  await updatedProfile.save({ runValidators: true });
 
   res.status(200).json({
     status: true,

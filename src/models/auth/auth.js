@@ -7,7 +7,13 @@ import { isValidPhoneNumber } from "libphonenumber-js";
 
 const authSchema = new mongoose.Schema(
   {
-    username: { type: String, required: true, unique: true, trim: true },
+    username: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+      minlength: [8, "username should of length 8 or greater than 8 !!"],
+    },
     email: {
       type: String,
       required: true,
@@ -18,8 +24,8 @@ const authSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
+      minlength: [8, "Password should of length 8 or greater than 8 !!"],
     },
-
     phoneNumber: {
       type: String,
       required: true,
@@ -51,9 +57,8 @@ const authSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      required: true,
-      default: "User",
-      enum: ["Admin", "User"],
+      default: "USER",
+      enum: ["ADMIN", "USER"],
     },
     profile: {
       type: String,
@@ -66,6 +71,9 @@ authSchema.post("save", async function (doc, next) {
   try {
     console.log("Document saved:", doc);
 
+    if (!doc.isNew) {
+      next();
+    }
     const newBookMark = await bookMark.create({
       userId: doc._id,
     });
